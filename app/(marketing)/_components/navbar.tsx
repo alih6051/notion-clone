@@ -27,7 +27,7 @@ export const Navbar = () => {
           <Spinner />
         )}
         {!isAuthenticated && !isLoading && (
-          <>
+          <div className="flex items-center">
             <SignInButton mode="modal">
               <Button variant="ghost" size="sm">
                 Log in
@@ -38,10 +38,10 @@ export const Navbar = () => {
                 Get Jotion free
               </Button>
             </SignInButton>
-          </>
+          </div>
         )}
         {isAuthenticated && !isLoading && (
-          <>
+          <div className="flex items-center">
             <Button variant="ghost" size="sm" asChild>
               <Link href="/documents">
                 Enter NotionLite
@@ -50,7 +50,7 @@ export const Navbar = () => {
             <UserButton
               afterSignOutUrl="/"
             />
-          </>
+          </div>
         )}
         <ModeToggle />
       </div>
