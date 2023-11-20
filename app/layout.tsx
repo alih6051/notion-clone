@@ -6,7 +6,7 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Jotion',
+  title: 'NotionLite',
   description: 'The connected workspace where better, faster work happens.',
   icons: {
     icon: [
@@ -37,7 +37,7 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-          storageKey="jotion-theme-2"
+          storageKey="notion-lite-theme-2"
         >
           {children}
         </ThemeProvider>
