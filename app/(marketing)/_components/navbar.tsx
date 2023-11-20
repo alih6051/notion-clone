@@ -35,7 +35,7 @@ export const Navbar = () => {
             </SignInButton>
             <SignInButton mode="modal">
               <Button size="sm">
-                Get Jotion free
+                Get NotionLite free
               </Button>
             </SignInButton>
           </div>
