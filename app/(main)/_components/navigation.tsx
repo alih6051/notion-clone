@@ -1,15 +1,29 @@
 "use client";
 
-import { ChevronsLeft, MenuIcon } from "lucide-react";
+import { 
+  ChevronsLeft, 
+  MenuIcon, 
+  PlusCircle, 
+  Search, 
+  Settings
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
+import { useQuery, useMutation } from "convex/react";
+import { toast } from "sonner";
+
 import { cn } from "@/lib/utils";
+import { api } from "@/convex/_generated/api";
+
 import { UserItem } from "./user-item";
+import { Item } from "./item";
 
 export const Navigation = () => {
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const documents = useQuery(api.documents.get);
+  const create = useMutation(api.documents.create);
 
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -52,10 +66,7 @@ export const Navigation = () => {
     if (sidebarRef.current && navbarRef.current) {
       sidebarRef.current.style.width = `${newWidth}px`;
       navbarRef.current.style.setProperty("left", `${newWidth}px`);
-      navbarRef.current.style.setProperty(
-        "width",
-        `calc(100% - ${newWidth}px)`
-      );
+      navbarRef.current.style.setProperty("width", `calc(100% - ${newWidth}px)`);
     }
   };
 
@@ -75,7 +86,10 @@ export const Navigation = () => {
         "width",
         isMobile ? "0" : "calc(100% - 240px)"
       );
-      navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
+      navbarRef.current.style.setProperty(
+        "left",
+        isMobile ? "100%" : "240px"
+      );
       setTimeout(() => setIsResetting(false), 300);
     }
   };
@@ -90,6 +104,16 @@ export const Navigation = () => {
       navbarRef.current.style.setProperty("left", "0");
       setTimeout(() => setIsResetting(false), 300);
     }
+  }
+
+  const handleCreate = () => {
+    const promise = create({ title: "Untitled" });
+
+    toast.promise(promise, {
+      loading: "Creating a new note...",
+      success: "New note created!",
+      error: "Failed to create a new note."
+    });
   };
 
   return (
@@ -114,9 +138,29 @@ export const Navigation = () => {
         </div>
         <div>
           <UserItem />
+          <Item
+            label="Search"
+            icon={Search}
+            isSearch
+            onClick={() => {}}
+          />
+          <Item
+            label="Settings"
+            icon={Settings}
+            onClick={() => {}}
+          />
+          <Item
+            onClick={handleCreate}
+            label="New page"
+            icon={PlusCircle}
+          />
         </div>
         <div className="mt-4">
-          <p>Documents</p>
+          {documents?.map((document) => (
+            <p key={document._id}>
+              {document.title}
+            </p>
+          ))}
         </div>
         <div
           onMouseDown={handleMouseDown}
@@ -133,15 +177,9 @@ export const Navigation = () => {
         )}
       >
         <nav className="bg-transparent px-3 py-2 w-full">
-          {isCollapsed && (
-            <MenuIcon
-              onClick={resetWidth}
-              role="button"
-              className="h-6 w-6 text-muted-foreground"
-            />
-          )}
+          {isCollapsed && <MenuIcon onClick={resetWidth} role="button" className="h-6 w-6 text-muted-foreground" />}
         </nav>
       </div>
     </>
-  );
-};
+  )
+}

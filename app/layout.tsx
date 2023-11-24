@@ -1,14 +1,15 @@
-import { ThemeProvider } from "@/components/providers/theme-provider";
-import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { ConvexClientProvider } from "@/components/providers/convex-provider";
+import { Toaster } from "sonner";
+import { ThemeProvider } from '@/components/providers/theme-provider'
+import './globals.css'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import { ConvexClientProvider } from '@/components/providers/convex-provider'
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "NotionLite",
-  description: "The connected workspace where better, faster work happens.",
+  title: 'NotionLite',
+  description: 'The connected workspace where better, faster work happens.',
   icons: {
     icon: [
       {
@@ -20,15 +21,15 @@ export const metadata: Metadata = {
         media: "(prefers-color-scheme: dark)",
         url: "/logo-dark.svg",
         href: "/logo-dark.svg",
-      },
-    ],
-  },
-};
+      }
+    ]
+  }
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -41,10 +42,11 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="notion-lite-theme-2"
           >
+            <Toaster position="bottom-center" />
             {children}
           </ThemeProvider>
         </ConvexClientProvider>
       </body>
     </html>
-  );
+  )
 }
