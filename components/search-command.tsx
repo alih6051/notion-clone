@@ -12,7 +12,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList
+  CommandList,
 } from "@/components/ui/command";
 import { useSearch } from "@/hooks/use-search";
 import { api } from "@/convex/_generated/api";
@@ -23,9 +23,11 @@ export const SearchCommand = () => {
   const documents = useQuery(api.documents.getSearch);
   const [isMounted, setIsMounted] = useState(false);
 
-  const toggle = useSearch((store) => store.toggle);
-  const isOpen = useSearch((store) => store.isOpen);
-  const onClose = useSearch((store) => store.onClose);
+  const { toggle, isOpen, onClose } = useSearch((store) => ({
+    toggle: store.toggle,
+    isOpen: store.isOpen,
+    onClose: store.onClose,
+  }));
 
   useEffect(() => {
     setIsMounted(true);
@@ -37,7 +39,7 @@ export const SearchCommand = () => {
         e.preventDefault();
         toggle();
       }
-    }
+    };
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
@@ -54,9 +56,7 @@ export const SearchCommand = () => {
 
   return (
     <CommandDialog open={isOpen} onOpenChange={onClose}>
-      <CommandInput
-        placeholder={`Search ${user?.fullName}'s NotionLite...`}
-      />
+      <CommandInput placeholder={`Search ${user?.fullName}'s NotionLite...`} />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Documents">
@@ -68,19 +68,15 @@ export const SearchCommand = () => {
               onSelect={onSelect}
             >
               {document.icon ? (
-                <p className="mr-2 text-[18px]">
-                  {document.icon}
-                </p>
+                <p className="mr-2 text-[18px]">{document.icon}</p>
               ) : (
                 <File className="mr-2 h-4 w-4" />
               )}
-              <span>
-                {document.title}
-              </span>
+              <span>{document.title}</span>
             </CommandItem>
           ))}
         </CommandGroup>
       </CommandList>
     </CommandDialog>
-  )
-}
+  );
+};
