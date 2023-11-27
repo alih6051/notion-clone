@@ -23,6 +23,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-settings";
 
 import { UserItem } from "./user-item";
 import { Item } from "./item";
@@ -30,6 +31,7 @@ import { DocumentList } from "./document-list";
 import { TrashBox } from "./trash-box";
 
 export const Navigation = () => {
+  const settings = useSettings();
   const search = useSearch();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -157,7 +159,7 @@ export const Navigation = () => {
           <Item
             label="Settings"
             icon={Settings}
-            onClick={() => {}}
+            onClick={settings.onOpen}
           />
           <Item
             onClick={handleCreate}
@@ -195,8 +197,7 @@ export const Navigation = () => {
         className={cn(
           "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]",
           isResetting && "transition-all ease-in-out duration-300",
-          isMobile && "left-0 w-full",
-          !isCollapsed && "hidden"
+          isMobile && "left-0 w-full"
         )}
       >
         <nav className="bg-transparent px-3 py-2 w-full">
